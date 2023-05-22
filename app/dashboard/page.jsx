@@ -1,26 +1,10 @@
 import AppLayout from '@/components/Layouts/AppLayout'
 import Head from 'next/head'
-import { getServerSession } from 'next-auth/next';
 import SessionTest from '@/components/session-test';
 import SignOut from '@/components/auth/sign-out';
-import { NextConfig } from '@/pages/api/auth/[...nextauth]';
-
-export async function apiTest() {
-    const session = await getServerSession(NextConfig);
-    console.log(`Bearer ${session.user.access_token}`)
-    const res = await fetch('http://localhost:8000/api/test', {
-        headers: {
-            authorization: `Bearer ${session.user.access_token}`,
-        }
-    });
-    const data = await res.json();
-    return data;
-}
 
 export default async function DashboardPage() {
 
-    const data = await apiTest();
-    
     return (
         <AppLayout
             header={
@@ -39,9 +23,6 @@ export default async function DashboardPage() {
                             You're logged in!
                             <SessionTest />
                             <SignOut />
-                            <div className="p-2 rounded bg-gray-200 my-4">
-                                <pre>{JSON.stringify(data, null, 2)}</pre>
-                            </div>
                         </div>
                     </div>
                 </div>

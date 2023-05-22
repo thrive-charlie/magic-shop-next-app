@@ -6,12 +6,12 @@ import { useSession } from 'next-auth/react';
 export default function SessionTest() {
   
     const { data: session } = useSession();
-    console.log({ session });
+    // console.log({ session });
   
     return (
     <div>
         <p>Session test</p>
-        <pre>{JSON.stringify(session, null, 2)}</pre>
+        <pre className='text-black'>{JSON.stringify(session, null, 2)}</pre>
     </div>
   )
 }

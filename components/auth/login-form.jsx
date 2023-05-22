@@ -7,45 +7,34 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import InputError from "@/components/InputError";
 import Label from "@/components/Label";
+import { useRouter } from "next/navigation";
 // import { useAuth } from '@/hooks/useAuth';
 
 export default function LoginForm() {
 
+  const router = useRouter();
+    const [providers, setProviders] = useState(null);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [shouldRemember, setShouldRemember] = useState(false);
     const [errors, setErrors] = useState([]);
     const [status, setStatus] = useState(null);
 
-    // const { login } = useAuth({
-    //     middleware: 'guest',
-    //     redirectIfAuthenticated: '/dashboard',
-    // });
-
     const submitForm = async e => {
         e.preventDefault();
 
-        // login({
-        //     email,
-        //     password,
-        //     remember: shouldRemember,
-        //     setErrors,
-        //     setStatus,
-        // });
-
-        const res = signIn('Credentials', {
+        const res = await signIn('credentials', {
             redirect: false,
             email,
-            password
+            password,
+            callbackUrl: `${window.location.origin}/dashboard`
         });
-        console.log(res);
+    
+        if (res.ok) {
+          router.push('/dashboard');
+        }
 
     };
-
-    const { data: session } = useSession();
-
-    const [providers, setProviders] = useState(null);
-    const [toggleDropdown, setToggleDropdown] = useState(false);
   
     useEffect(() => {
       (async () => {

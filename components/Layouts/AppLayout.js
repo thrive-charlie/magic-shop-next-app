@@ -1,11 +1,15 @@
+import { Suspense } from "react"
+import { getServerSession } from "next-auth/next"
 import Navigation from '@/components/Layouts/Navigation'
-import { useAuth } from '@/hooks/useAuth'
+import { authOptions } from '@/pages/api/auth/[...nextauth]'
 
-const AppLayout = ({ header, children }) => {
+const AppLayout = async ({ header, children }) => {
+
+    const session = await getServerSession(authOptions)
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <Navigation />
+            <Navigation user={session?.user} />
 
             {/* Page Heading */}
             <header className="bg-white shadow">
@@ -15,9 +19,12 @@ const AppLayout = ({ header, children }) => {
             </header>
 
             {/* Page Content */}
-            <main>{children}</main>
+            <Suspense fallback={<p>Loading data...</p>}>
+                <main>{children}</main>
+            </Suspense>
         </div>
     )
 }
 
 export default AppLayout
+  

@@ -2,16 +2,8 @@
 
 import ApplicationLogo from '@/components/ApplicationLogo'
 import Link from 'next/link'
-import NavLink from '@/components/NavLink'
-import ResponsiveNavLink, {
-    ResponsiveNavButton,
-} from '@/components/ResponsiveNavLink'
-import { useState } from 'react'
-import { useSession } from 'next-auth/react';
 
-const Navigation = () => {
-    const [open, setOpen] = useState(false);
-    const { data } = useSession();
+const Navigation = ({ user }) => {
 
     return (
         <nav className="bg-white border-b border-gray-100">
@@ -27,12 +19,15 @@ const Navigation = () => {
                                 <Link href="/dashboard">
                                     Dashboard
                                 </Link>
+                                <Link href="/products">
+                                    Products
+                                </Link>
                             </div>
                         </div>
 
                         <div className='flex items-center justify-end'>
-                            {data?.user && (
-                                <p>Hi, {data.user.first_name}</p>
+                            {user && (
+                                <p>Hi, {user.first_name}</p>
                             )}
                         </div>
 

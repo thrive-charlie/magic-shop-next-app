@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-export const NextConfig = {
+export const authOptions = {
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
@@ -17,7 +17,9 @@ export const NextConfig = {
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
 
-        const res = await fetch("http://localhost:8000/api/auth/login", {
+        // NOTE: If you get a 401 error when signing in, it might be that the URL is incorrect or being refused
+        // Try switching between 127.0.0.1 and localhost.
+        const res = await fetch("http://127.0.0.1:8000/api/auth/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -50,6 +52,25 @@ export const NextConfig = {
       return session;
     },
   },
+  pages: {
+    signIn: "/auth/login",
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  debug: true,
+  logger: {
+    error(code, ...message) {
+      console.log(code, message);
+    },
+    warn(code, ...message) {
+      console.log(code, message);
+    },
+    debug(code, ...message) {
+      console.log(code, message);
+    },
+  },
 };
 
-export default NextAuth(NextConfig);
+export default NextAuth(authOptions);
