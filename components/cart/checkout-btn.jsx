@@ -6,12 +6,13 @@ import CheckoutForm from "./checkout-form";
 import { useSession } from "next-auth/react";
 
 export default function CheckoutBtn({ stripePromise }) {
+
   const [clientSecret, setClientSecret] = useState("");
   const { data: session, status } = useSession();
 
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
-    if (session) {
+    if (session && clientSecret === "") {
         console.log(session, 'http://127.0.0.1:8000/api/checkout')
         fetch("http://127.0.0.1:8000/api/checkout", {
         method: "POST",
@@ -23,13 +24,13 @@ export default function CheckoutBtn({ stripePromise }) {
         .then((res) => res.json())
         .then((data) => setClientSecret(data.client_secret));
     }
-}, [session]);
+}, [session, clientSecret]);
 
   const options = {
     clientSecret,
     appearance: {
         theme: 'stripe',
-      },
+    },
   };
 
   return (

@@ -22,6 +22,9 @@ const Navigation = ({ user }) => {
                                 <Link href="/products">
                                     Products
                                 </Link>
+                                <Link href="/cart">
+                                    Cart
+                                </Link>
                             </div>
                         </div>
 
