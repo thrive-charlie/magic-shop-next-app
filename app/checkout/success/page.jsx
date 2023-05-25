@@ -1,8 +1,10 @@
 import AppLayout from '@/components/Layouts/AppLayout'
 import React from 'react'
 
-export default function CheckoutComplete() {
+export default async function page() {
   return (
-    <AppLayout>CheckoutComplete</AppLayout>
+    <AppLayout>
+        Checkout complete.
+    </AppLayout>
   )
 }

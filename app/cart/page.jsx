@@ -3,11 +3,11 @@ import { loadStripe } from "@stripe/stripe-js";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import CheckoutBtn from "@/components/cart/checkout-btn";
-import AppLayout from "@/components/Layouts/AppLayout";
+import Link from "next/link";
 
 async function getCart() {
   const { user } = await getServerSession(authOptions);
-  const res = await fetch(`http://127.0.0.1:8000/api/cart`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/cart`, {
     headers: {
       Authorization: `Bearer ${user.access_token}`,
     },
@@ -21,7 +21,6 @@ export default async function CartPage() {
   const cart = await getCart();
 
   return (
-    <AppLayout>
       <div className="max-w-5xl mx-auto w-full bg-white my-20">
         <div className="p-6">
           <p>Cart</p>
@@ -39,7 +38,10 @@ export default async function CartPage() {
               <div className="mb-8">
                 <p className="text-xl">Total: £{cart.total}</p>
               </div>
-              <CheckoutBtn stripePromise={stripePromise} />
+              <Link href="/checkout" className="p-2 rounded bg-slate-900 text-white">
+                Checkout
+              </Link>
+              {/* <CheckoutBtn stripePromise={stripePromise} /> */}
             </div>
           ) : (
             <div>
@@ -48,6 +50,5 @@ export default async function CartPage() {
           )}
         </div>
       </div>
-    </AppLayout>
   );
 }
