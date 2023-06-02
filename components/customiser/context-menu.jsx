@@ -6,7 +6,7 @@ import { AiOutlineFontSize } from 'react-icons/ai';
 export default function ContextMenu({ open, element, x, y }) {
 
     useEffect(() => {
-        console.log(x, y);
+        console.log(element);
     }, [open]);
 
     const changeFont = () => {
@@ -41,16 +41,19 @@ export default function ContextMenu({ open, element, x, y }) {
                 <Menu.Divider />
 
                 <Menu.Label>Appearance</Menu.Label>
-                <Menu.Item icon={<AiOutlineFontSize className="w-4 h-4" />} onClick={changeFont}>
-                    Change Font
-                </Menu.Item>
-                <Menu.Item icon={<AiOutlineFontSize className="w-4 h-4" />} onClick={increaseSize}>
-                    Increase Size
-                </Menu.Item>
-                <Menu.Item icon={<AiOutlineFontSize className="w-4 h-4" />} onClick={decreaseSize}>
-                    Decrease Size
-                </Menu.Item>
-
+                {element?.attrs.hasOwnProperty('text') && (
+                    <>
+                        <Menu.Item icon={<AiOutlineFontSize className="w-4 h-4" />} onClick={changeFont}>
+                            Change Font
+                        </Menu.Item>
+                        <Menu.Item icon={<AiOutlineFontSize className="w-4 h-4" />} onClick={increaseSize}>
+                            Increase Size
+                        </Menu.Item>
+                        <Menu.Item icon={<AiOutlineFontSize className="w-4 h-4" />} onClick={decreaseSize}>
+                            Decrease Size
+                        </Menu.Item>
+                    </>
+                )}
             </Menu.Dropdown>
         </Menu>
     </aside>

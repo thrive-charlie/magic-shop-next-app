@@ -19,9 +19,9 @@ export default function ProductCustomiser() {
   const textInput = useRef(null);
   const { ref, x, y } = useMouse();
 
-  let stage = null;
-  let transformer = null;
-  var layer = null;
+  const stage = useRef(null);
+  const transformer = useRef(null);
+  const layer = useRef(null);
   let x1, y1, x2, y2;
 
   const selectionRectangle = new Konva.Rect({
@@ -29,7 +29,7 @@ export default function ProductCustomiser() {
     padding: "10px",
     visible: true,
   });
-  transformer = new Konva.Transformer();
+  transformer.current = new Konva.Transformer();
 
   useEffect(() => {
     if (!hasInit) {
@@ -39,47 +39,49 @@ export default function ProductCustomiser() {
 
   const initCanvas = () => {
     // Setup stage
-    stage = new Konva.Stage({
-      container: "container",
+    const konvaStage = new Konva.Stage({
+      container: 'container',
       width: 1184,
       height: 600,
     });
 
+    // Store the stage reference
+    stage.current = konvaStage;
+
     // Setup layer
-    layer = new Konva.Layer();
-    console.log('Setting layer', layer);
-    stage.add(layer);
+    layer.current = new Konva.Layer();
+    stage.current.add(layer.current);
 
     // Add transformer
-    layer.add(transformer);
+    layer.current.add(transformer.current);
 
     // add a new feature, lets add ability to draw selection rectangle
-    layer.add(selectionRectangle);
+    layer.current.add(selectionRectangle);
 
     // Attach events
-    stage.on("mousedown touchstart", (e) => {
+    stage.current.on("mousedown touchstart", (e) => {
       // do nothing if we mousedown on any shape
       if (e.target !== stage) {
         return;
       }
       e.evt.preventDefault();
-      x1 = stage.getPointerPosition().x;
-      y1 = stage.getPointerPosition().y;
-      x2 = stage.getPointerPosition().x;
-      y2 = stage.getPointerPosition().y;
+      x1 = stage.current.getPointerPosition().x;
+      y1 = stage.current.getPointerPosition().y;
+      x2 = stage.current.getPointerPosition().x;
+      y2 = stage.current.getPointerPosition().y;
 
       selectionRectangle.visible(true);
       selectionRectangle.width(0);
       selectionRectangle.height(0);
     });
-    stage.on("mousemove touchmove", (e) => {
+    stage.current.on("mousemove touchmove", (e) => {
       // do nothing if we didn't start selection
       if (!selectionRectangle.visible()) {
         return;
       }
       e.evt.preventDefault();
-      x2 = stage.getPointerPosition().x;
-      y2 = stage.getPointerPosition().y;
+      x2 = stage.current.getPointerPosition().x;
+      y2 = stage.current.getPointerPosition().y;
 
       selectionRectangle.setAttrs({
         x: Math.min(x1, x2),
@@ -88,7 +90,7 @@ export default function ProductCustomiser() {
         height: Math.abs(y2 - y1),
       });
     });
-    stage.on("mouseup touchend", (e) => {
+    stage.current.on("mouseup touchend", (e) => {
       // do nothing if we didn't start selection
       if (!selectionRectangle.visible()) {
         return;
@@ -99,14 +101,15 @@ export default function ProductCustomiser() {
         selectionRectangle.visible(false);
       });
 
-      var shapes = stage.find(".image");
+      var shapes = stage.current.find(".image");
       var box = selectionRectangle.getClientRect();
       var selected = shapes.filter((shape) =>
         Konva.Util.haveIntersection(box, shape.getClientRect())
       );
-      transformer.nodes(selected);
+      console.log(layer.current);
+      layer.current.nodes(selected);
     });
-    stage.on("click tap", function (e) {
+    stage.current.on("click tap", function (e) {
       // if we are selecting with rect, do nothing
       if (selectionRectangle.visible()) {
         console.log("Selection in progress");
@@ -116,7 +119,7 @@ export default function ProductCustomiser() {
       // if click on empty area - remove all selections
       if (e.target === stage) {
         console.log("Empty area clicked");
-        transformer.nodes([]);
+        layer.current.nodes([]);
         return;
       }
 
@@ -127,28 +130,28 @@ export default function ProductCustomiser() {
 
       // do we pressed shift or ctrl?
       const metaPressed = e.evt.shiftKey || e.evt.ctrlKey || e.evt.metaKey;
-      const isSelected = transformer.nodes().indexOf(e.target) >= 0;
+      const isSelected = layer.current.nodes().indexOf(e.target) >= 0;
 
       console.log("If statement");
 
       if (!metaPressed && !isSelected) {
         // if no key pressed and the node is not selected
         // select just one
-        transformer.nodes([e.target]);
+        layer.current.nodes([e.target]);
         console.log("Single item selected", e.target);
         selectionRectangle.d;
       } else if (metaPressed && isSelected) {
         // if we pressed keys and node was selected
         // we need to remove it from selection:
-        const nodes = transformer.nodes().slice(); // use slice to have new copy of array
+        const nodes = layer.current.nodes().slice(); // use slice to have new copy of array
         // remove node from array
         nodes.splice(nodes.indexOf(e.target), 1);
-        transformer.nodes(nodes);
+        layer.current.nodes(nodes);
         console.log("Remove item", e.target);
       } else if (metaPressed && !isSelected) {
         // add the node into selection
-        const nodes = transformer.nodes().concat([e.target]);
-        transformer.nodes(nodes);
+        const nodes = layer.current.nodes().concat([e.target]);
+        layer.current.nodes(nodes);
         console.log("Adding many items", e.target);
       }
     });
@@ -159,7 +162,7 @@ export default function ProductCustomiser() {
     });
 
     // Open menu
-    stage.on("contextmenu", function (e) {
+    stage.current.on("contextmenu", function (e) {
       // prevent default behavior
       e.evt.preventDefault();
       if (e.target === stage) {
@@ -187,8 +190,7 @@ export default function ProductCustomiser() {
         scale: { x: 0.5, y: 0.5 },
       });
 
-      console.log(layer);
-      layer.add(img);
+      layer.current.add(img);
 
       img.on("transform", () => {
         // reset scale on transform
@@ -208,7 +210,7 @@ export default function ProductCustomiser() {
   };
 
   const exportCanvas = () => {
-    var dataURL = stage.toDataURL({ pixelRatio: 3 });
+    var dataURL = stage.current.toDataURL({ pixelRatio: 3 });
     var link = document.createElement("a");
     link.download = "Export.png";
     link.href = dataURL;
@@ -230,7 +232,7 @@ export default function ProductCustomiser() {
       // align: 'center',
       draggable: true,
     });
-    layer.add(complexText);
+    layer.current.add(complexText);
 
     complexText.on("transform", function () {
       // reset scale, so only with is changing by transformer
@@ -239,7 +241,7 @@ export default function ProductCustomiser() {
         scaleX: 1,
       });
     });
-    stage.add(layer);
+    stage.current.add(layer.current);
     textInput.current.value = "";
   };
 
