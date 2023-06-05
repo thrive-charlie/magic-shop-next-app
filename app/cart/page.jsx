@@ -1,9 +1,9 @@
 import React from "react";
-import { loadStripe } from "@stripe/stripe-js";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import CheckoutBtn from "@/components/cart/checkout-btn";
 import Link from "next/link";
+import {BsArrowRight} from 'react-icons/bs'
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import Button from "@/components/common/button";
 
 async function getCart() {
   const { user } = await getServerSession(authOptions);
@@ -17,13 +17,12 @@ async function getCart() {
 
 export default async function CartPage() {
 
-  const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
   const cart = await getCart();
 
   return (
       <div className="max-w-5xl mx-auto w-full bg-white my-20">
         <div className="p-6">
-          <p>Cart</p>
+          <h1 className="font-bold text-4xl tracking-tighter mb-2">Cart</h1>
           {cart?.items ? (
             <div className="my-4 p-2">
               <div className="mb-4">
@@ -41,11 +40,11 @@ export default async function CartPage() {
               <Link href="/checkout" className="p-2 rounded bg-slate-900 text-white">
                 Checkout
               </Link>
-              {/* <CheckoutBtn stripePromise={stripePromise} /> */}
             </div>
           ) : (
             <div>
-              <p>Your cart is currently empty!</p>
+              <p className="text-lg tracking-tight mb-2">Your cart is currently empty!</p>
+              <Button as={Link} href="/products" icon={BsArrowRight}>View Products</Button>
             </div>
           )}
         </div>

@@ -31,6 +31,8 @@ export default function LoginForm() {
         });
     
         if (res.ok) {
+          setErrors(false);
+          close();
           router.push('/dashboard');
         }
 

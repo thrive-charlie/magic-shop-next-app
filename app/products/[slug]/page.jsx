@@ -19,8 +19,8 @@ export default async function ProductSinglePage({ params }) {
     const { id, name, description, price } = await getProducts(params.slug);
 
   return (
-    <AppLayout>
-      <div className="max-w-5xl mx-auto w-full bg-white my-20">
+    <main>
+      <div className="max-w-7xl mx-auto w-full bg-white mt-8">
         <div className="p-6">
           <h1>{name} - ID {id}</h1>
           <p>{description}</p>
@@ -28,7 +28,7 @@ export default async function ProductSinglePage({ params }) {
           <AddToCart id={id} />
         </div>
       </div>
-    </AppLayout>
+    </main>
   )
 
   

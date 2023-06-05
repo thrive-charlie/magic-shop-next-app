@@ -1,4 +1,5 @@
 import AppLayout from "@/components/Layouts/AppLayout";
+import ProductCard from "@/components/products/product-card";
 import Link from "next/link";
 import React from "react";
 
@@ -16,20 +17,17 @@ export default async function ProductsPage() {
   const data = await getProducts();
 
   return (
-    <AppLayout>
-      ProductsPage
-      <pre className="my-4 block w-full bg-gray-200">
-        {JSON.stringify(data, null, 2)}
-      </pre>
-      {data.map(item => (
-        <div key={item.id}>
-            <h2>{item.name}</h2>
-            <p>{item.description}</p>
-            <Link href={`/products/${item.slug}`}>
-                View product
-            </Link>
-        </div>
-      ))}
-    </AppLayout>
+    <main className="max-w-7xl mx-auto w-full">
+      <div className="p-8 mt-8 rounded bg-white">
+
+      <h1 className="text-3xl tracking-tight font-bold mb-4">All Products</h1>
+
+      <div className="grid grid-cols-3 gap-12">
+        {data.map(item => (
+          <ProductCard key={item.id} {...item} />
+          ))}
+      </div>
+          </div>
+    </main>
   );
 }

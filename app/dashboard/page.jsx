@@ -6,12 +6,7 @@ import SignOut from '@/components/auth/sign-out';
 export default async function DashboardPage() {
 
     return (
-        <AppLayout
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Dashboard
-                </h2>
-            }>
+        <main>
             <Head>
                 <title>Laravel - Dashboard</title>
             </Head>
@@ -27,6 +22,6 @@ export default async function DashboardPage() {
                     </div>
                 </div>
             </div>
-        </AppLayout>
+        </main>
     )
 }

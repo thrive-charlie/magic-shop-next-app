@@ -16,15 +16,15 @@ export default function CheckoutForm() {
         defaultValues: {
             shipping: {
                 first_name: 'test',
-                last_name: '',
-                company: '',
-                address_line_one: '',
+                last_name: 'test',
+                company: 'test',
+                address_line_one: 'test',
                 address_line_two: '',
-                city: '',
-                county: '',
-                postcode: '',
-                country: '',
-                phone_number: '',
+                city: 'test',
+                county: 'test',
+                postcode: 'GL14 2JW',
+                country: 'United Kingdom',
+                phone_number: '01234567890',
             }
         },
         // TODO: Implement auto prefill from API
@@ -34,18 +34,26 @@ export default function CheckoutForm() {
     const handleCheckout = async (data) => {
         
         setLoading(true);
-        const request = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/checkout`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session.user.access_token}`,
-            },
-            body: JSON.stringify(data)
-        });
-    
-        const response = await request.json();
 
-        console.log(response);
+        try {
+            const request = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/checkout`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session.user.access_token}`,
+                },
+                body: JSON.stringify(data)
+            });
+        
+            const response = await request.json();
+    
+            if (response?.checkout_url) {
+                window.location.href = response.checkout_url;
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
 
     };
 
