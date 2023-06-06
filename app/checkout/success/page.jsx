@@ -1,24 +1,12 @@
 import Button from "@/components/common/button";
+import { useApi } from "@/utils/useApi";
 import Link from "next/link";
-
-async function confirmOrder(session_id) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/checkout/complete`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ session_id })
-  });
-
-  const data = await res.json();
-
-  return data;
-}
 
 export default async function Page({ searchParams }) {
 
-  const data = await confirmOrder(searchParams.session_id);
-  console.log(data);
+  const { data } = await useApi('/checkout/complete', 'POST', { 
+    session_id: searchParams.session_id 
+  });
 
   return (
     <main className='my-8 mx-auto max-w-7xl'>
