@@ -30,14 +30,12 @@ export default async function ProductSinglePage({ params }) {
       </div>
     </main>
   )
-
   
 }
 
-// TODO: Generate all the pages
+// Generate all product pages
 export async function generateStaticParams() {
     const products = await fetch('http://127.0.0.1:8000/api/products').then((res) => res.json());
-   
     return products.map((products) => ({
       slug: products.slug,
     }));

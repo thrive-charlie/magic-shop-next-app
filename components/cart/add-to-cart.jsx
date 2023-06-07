@@ -1,34 +1,58 @@
 "use client"
 import React, { useState } from 'react'
-import axios from '@/utils/axios'
+import Button from '@/components/common/button';
 import { useSession } from 'next-auth/react';
+import AuthModal from '../auth/auth-modal';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 export default function AddToCart({ id }) {
 
     const [loading, setLoading] = useState(false);
-    const { data } = useSession();
+    const [authRequired, setAuthRequired] = useState(false);
+    const { data: session } = useSession();
+    const router = useRouter();
 
     const handleAddToCart = async () => {
         setLoading(true);
-        const response = await axios('/api/cart/add', {
+
+        // Make sure user is logged in
+        if (!session) {
+            setAuthRequired(true);
+            setLoading(false);
+            return;
+        }
+
+        // Otherwise, continue to customiser
+        router.push(`/products/customiser?id=${id}`);
+
+    };
+
+    const add = async() => {
+        setLoading(true);
+
+        await axios('/api/cart/add', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${data.user.access_token}`,
             },
-            data: { id, quantity: 2 }
+            data: { id, quantity: 1 }
         });
-
-        console.log(response);
         setLoading(false);
 
     }
 
   return (
-    <button 
-        type="button"
-        className='p-2 rounded bg-slate-900 text-white'
-        onClick={handleAddToCart}>
-        Add to Cart - {loading ? 'Adding...' : 'Add'}
-    </button>
+    <>
+        <Button 
+            loading={loading}
+            onClick={handleAddToCart}>
+            Customise your product
+        </Button>
+        <Button loading={loading} onClick={add}>
+            Add to cart
+        </Button>
+        <AuthModal open={authRequired} close={() => setAuthRequired(false)} />
+    </>
   )
 }
