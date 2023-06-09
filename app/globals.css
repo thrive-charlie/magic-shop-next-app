@@ -412,3 +412,29 @@ video {
 #menu button:hover {
   background-color: lightgray;
 }
+
+.mantine-Select-item[value] .mantine-Text-root {
+    font-size: 1.1rem;
+  }
+  
+  /* Classes should be added for each select item to show the font */
+  .mantine-Select-item[value="Permanent Marker"] .mantine-Text-root {
+    font-family: "Permanent Marker", serif;
+  }
+  
+  .mantine-Select-item[value="Calibri"] .mantine-Text-root {
+    font-family: "Calibri", serif;
+  }
+  
+  .mantine-Select-item[value="Passion One"] .mantine-Text-root {
+    font-family: "Passion One", serif;
+  }
+  
+  .mantine-Select-item[value="Chewy"] .mantine-Text-root {
+    font-family: "Chewy", serif;
+  }
+  
+  .mantine-Select-item[value="Arial"] .mantine-Text-root {
+    font-family: "Arial", serif;
+  }
+  
