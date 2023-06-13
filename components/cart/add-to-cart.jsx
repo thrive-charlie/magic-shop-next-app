@@ -6,7 +6,7 @@ import AuthModal from '../auth/auth-modal';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
-export default function AddToCart({ id }) {
+export default function AddToCart({ id, addons, quantity }) {
 
     const [loading, setLoading] = useState(false);
     const [authRequired, setAuthRequired] = useState(false);
@@ -23,12 +23,17 @@ export default function AddToCart({ id }) {
             return;
         }
 
+        // convert unix timestamp to string
+        const time = new Date().getTime().toString();
+        const key = `${time}-${id}`;
+        localStorage.setItem(key, JSON.stringify({ id, addons, quantity }));
+
         // Otherwise, continue to customiser
-        router.push(`/products/customiser?id=${id}`);
+        router.push(`/products/customiser?id=${key}`);
 
     };
 
-    const add = async() => {
+    const add = async () => {
         setLoading(true);
 
         await axios('/api/cart/add', {
@@ -42,17 +47,17 @@ export default function AddToCart({ id }) {
 
     }
 
-  return (
-    <>
-        <Button 
-            loading={loading}
-            onClick={handleAddToCart}>
-            Customise your product
-        </Button>
-        <Button loading={loading} onClick={add}>
-            Add to cart
-        </Button>
-        <AuthModal open={authRequired} close={() => setAuthRequired(false)} />
-    </>
-  )
+    return (
+        <>
+            <Button
+                loading={loading}
+                onClick={handleAddToCart}>
+                Customise your product
+            </Button>
+            <Button loading={loading} onClick={add}>
+                Add to cart
+            </Button>
+            <AuthModal open={authRequired} close={() => setAuthRequired(false)} />
+        </>
+    )
 }

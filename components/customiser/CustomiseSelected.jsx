@@ -19,7 +19,7 @@ import {
 } from "react-icons/rx";
 
 export const dynamic = 'force-dynamic';
-export default function CustomiseSelected({ element, deleteElement }) {
+export default function CustomiseSelected({ element, deleteElement, colourPalette }) {
   // Font controls
   const fontUp = () => element.setFontSize(element.getFontSize() + 2);
   const fontDown = () => element.setFontSize(element.getFontSize() - 2);
@@ -43,12 +43,12 @@ export default function CustomiseSelected({ element, deleteElement }) {
  * Select item lifted out to own component to add
  * value attribute.
  */
-const SelectItem = forwardRef(({ label, ...others }, ref) => (
-  <div ref={ref} {...others}>
-    <Text size="sm">{label}</Text>
-  </div>
-));
-SelectItem.displayName = "SelectItem";
+  const SelectItem = forwardRef(({ label, ...others }, ref) => (
+    <div ref={ref} {...others}>
+      <Text size="sm">{label}</Text>
+    </div>
+  ));
+  SelectItem.displayName = "SelectItem";
 
   return (
     <div>
@@ -115,7 +115,7 @@ SelectItem.displayName = "SelectItem";
             </Button>
           </Flex>
           <TextInput
-            label="Update Text"
+            label="Text"
             my={16}
             defaultValue={element.getText()}
             onChange={(e) => element.setText(e.target.value)}
@@ -126,22 +126,7 @@ SelectItem.displayName = "SelectItem";
             my={16}
             format="hex"
             swatchesPerRow={5}
-            swatches={[
-              "#25262b",
-              "#868e96",
-              "#fa5252",
-              "#e64980",
-              "#be4bdb",
-              "#7950f2",
-              "#4c6ef5",
-              "#228be6",
-              "#15aabf",
-              "#12b886",
-              "#40c057",
-              "#82c91e",
-              "#fab005",
-              "#fd7e14"
-            ]}
+            swatches={colourPalette}
             defaultValue={element.getFill()}
             onChange={(colour) => element.setFill(colour)}
           />

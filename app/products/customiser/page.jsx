@@ -5,27 +5,26 @@ import { useRouter } from "next/navigation";
 
 // Disables SSR, required to make Konva work
 
-const ProductCustomiser = dynamic(() => import("@/components/customiser/product-customiser"), {
+const ProductCustomiser = dynamic(() => import("@/components/customiser/ProductCustomiser"), {
   ssr: false,
 });
 
-export default async function Page({ searchParams }) {
+// Destructuring props to searchParams caused NextJS errors to be thrown
+export default async function Page(props) {
 
   // Redirect if no product is provided
   const router = useRouter();
-  if (!searchParams?.id) {
+  if (!props?.searchParams?.id) {
     router.push("/");
   }
 
-  const data = await useApi(`/api/customiser/${searchParams.id}`);
-
   return (
     <main>
-        <div className="max-w-8xl mx-auto w-full mt-12">
-            <div className="p-8 bg-white rounded">
-                <ProductCustomiser />
-            </div>
+      <div className="max-w-7xl mx-auto w-full mt-12">
+        <div className="p-8 bg-white rounded">
+          <ProductCustomiser />
         </div>
+      </div>
     </main>
   )
 }

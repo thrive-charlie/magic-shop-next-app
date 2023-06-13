@@ -1,10 +1,9 @@
-import AppLayout from '@/components/Layouts/AppLayout'
-import AddToCart from '@/components/cart/add-to-cart';
-import React from 'react'
+import ProductGallery from '@/components/products/product-gallery';
+import AddonSelector from '@/components/products/AddonSelector';
 
 // Get product from API
 async function getProducts(slug) {
-  const res = await fetch(`http://127.0.0.1:8000/api/products/${slug}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/${slug}`);
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     console.log(res);
@@ -15,28 +14,36 @@ async function getProducts(slug) {
 
 export default async function ProductSinglePage({ params }) {
 
-    // Pull in this product page data and build up page
-    const { id, name, description, price } = await getProducts(params.slug);
+  // Pull in this product page data and build up page
+  const { id, name, description, price, addon_groups: groups } = await getProducts(params.slug);
 
   return (
-    <main>
-      <div className="max-w-7xl mx-auto w-full bg-white mt-8">
-        <div className="p-6">
-          <h1>{name} - ID {id}</h1>
+    <main className='max-w-7xl mx-auto grid grid-cols-2 gap-12 px-8'>
+      <aside>
+        <ProductGallery />
+      </aside>
+      <section className='bg-white shadow py-20 px-8'>
+        <header className='mb-4'>
+          <h1 className='text-4xl font-bold tracking-tighter mb-2'>{name}</h1>
           <p>{description}</p>
-          <p>£{price}</p>
-          <AddToCart id={id} />
-        </div>
-      </div>
+          <p>From £{price}</p>
+        </header>
+        {id === 10 && (
+          <p>Show trade pricing table</p>
+        )}
+
+        <AddonSelector id={id} groups={groups} />
+
+      </section>
     </main>
   )
-  
+
 }
 
 // Generate all product pages
 export async function generateStaticParams() {
-    const products = await fetch('http://127.0.0.1:8000/api/products').then((res) => res.json());
-    return products.map((products) => ({
-      slug: products.slug,
-    }));
-  }
+  const products = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`).then((res) => res.json());
+  return products.map((products) => ({
+    slug: products.slug,
+  }));
+}
