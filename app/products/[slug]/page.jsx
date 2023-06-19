@@ -2,8 +2,9 @@ import ProductGallery from '@/components/products/product-gallery';
 import AddonSelector from '@/components/products/AddonSelector';
 
 // Get product from API
-async function getProducts(slug) {
+async function getProduct(slug) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/${slug}`);
+  console.log(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/${slug}`)
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     console.log(res);
@@ -15,7 +16,9 @@ async function getProducts(slug) {
 export default async function ProductSinglePage({ params }) {
 
   // Pull in this product page data and build up page
-  const { id, name, description, price, addon_groups: groups } = await getProducts(params.slug);
+  const { id, name, description, price, addon_groups: groups } = await getProduct(params.slug);
+
+  const products = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`).then((res) => res.json());
 
   return (
     <main className='max-w-7xl mx-auto grid grid-cols-2 gap-12 px-8'>
@@ -40,9 +43,26 @@ export default async function ProductSinglePage({ params }) {
 
 }
 
-// Generate all product pages
+/**
+ * Generates metadata for a product page.
+ */
+export async function generateMetadata({ params }) {
+  const { name, description, keywords } = await getProduct(params.slug);
+  return {
+    title: name,
+    description: description,
+    keywords: keywords ?? '',
+  }
+}
+
+/**
+ * Generate all product pages.
+ * 
+ * @returns array
+ */
 export async function generateStaticParams() {
-  const products = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`).then((res) => res.json());
+  const products = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`, { next: { revalidate: 100 } }).then((res) => res.json());
+  console.log(products);
   return products.map((products) => ({
     slug: products.slug,
   }));
