@@ -1,21 +1,7 @@
-import SignOut from '@/components/auth/sign-out';
-import { useApi } from '@/utils/useApi';
-import Table from '@/components/dashboard/table';
-
-export default async function DashboardPage() {
-
-    const { data } = await useApi('/dashboard', 'GET');
-
+export default function DashboardPage() {
     return (
         <main>
-            <SignOut />
-            <div className="max-w-7xl mx-auto mt-12">
-                <div className="p-6 bg-white border-b border-gray-200 rounded">
-                    {data.orders && (
-                        <Table orders={data.orders} />
-                    )}
-                </div>
-            </div>
+            <h1>Dashboard landing</h1>
         </main>
     )
 }

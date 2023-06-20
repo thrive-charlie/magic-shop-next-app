@@ -1,19 +1,40 @@
+"use client";
+
 import React, { useState } from "react";
-import { TextInput, Alert } from '@mantine/core';
+import { TextInput, Alert, PasswordInput } from '@mantine/core';
+import axios from 'axios';
+import { useSession } from 'next-auth/react';
 import { BsExclamationTriangle } from "react-icons/bs";
 import { BiLogInCircle } from 'react-icons/bi';
-import Button from "../common/button";
+import Button from "@/components/common/button";
 
 export default function ModalRegister({ close, setView }) {
 
-    const [error, setError] = useState(false);
-    const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-    const registerHandle = (event) => {
-        event.preventDefault();
-        console.log('register');
-        setLoading(true);
-    };
+  const registerHandle = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    // Get form data and submit as json in axios post request to api
+    const formData = new FormData(e.target);
+
+    const { data } = await axios.post(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register`,
+      { ...Object.fromEntries(formData) },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        }
+      }
+    );
+
+    if (data.message) {
+
+    }
+
+  };
 
   return (
     <>
@@ -42,26 +63,29 @@ export default function ModalRegister({ close, setView }) {
           <TextInput
             label="First Name"
             placeholder="Enter your first name"
+            name="firstName"
             className="mb-4"
             required
           />
           <TextInput
             label="Last Name"
             placeholder="Enter your last name"
+            name="lastName"
             className="mb-4"
             required
           />
           <TextInput
             label="Email"
             type="email"
+            name="email"
             placeholder="Enter your email"
             className="mb-4"
             required
           />
-          <TextInput
+          <PasswordInput
             label="Password"
             placeholder="Enter your password"
-            type="password"
+            name="password"
             className="mb-8"
             required
           />

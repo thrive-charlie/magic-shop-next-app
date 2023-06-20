@@ -5,7 +5,7 @@ import ModalLogin from './modal-login'
 import ModalRegister from './modal-register';
 import ModalForgotPassword from './modal-forgot-password';
 
-export default function AuthModal({ open, close }) {
+export default function AuthModal({ open, close, completed }) {
 
     // Convert to reducer
     const [view, setView] = useState('login');
@@ -23,12 +23,15 @@ export default function AuthModal({ open, close }) {
             break;
     }
 
-  return (
-    <Modal opened={open} 
-        size="xl"
-        centered
-        onClose={close}>
-        <Component close={close} setView={setView} />
-    </Modal>
-  )
+    return (
+        <Modal opened={open}
+            size="xl"
+            centered
+            overlayProps={{
+                blur: 5,
+            }}
+            onClose={close}>
+            <Component close={close} setView={setView} completed={completed} />
+        </Modal>
+    )
 }

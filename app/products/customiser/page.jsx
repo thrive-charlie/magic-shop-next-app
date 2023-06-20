@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 
 // Disables SSR, required to make Konva work
-
 const ProductCustomiser = dynamic(() => import("@/components/customiser/ProductCustomiser"), {
   ssr: false,
 });

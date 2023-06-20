@@ -8,6 +8,7 @@ import { useDisclosure } from "@mantine/hooks";
 import ApplicationLogo from "@/components/ApplicationLogo";
 import Button from "@/components/common/button";
 import AuthModal from "@/components/auth/auth-modal";
+import AccountDropdown from "./AccountDropdown";
 
 const Navigation = ({ user }) => {
 	const [opened, { open, close }] = useDisclosure(false);
@@ -34,12 +35,7 @@ const Navigation = ({ user }) => {
 							<HiOutlineShoppingBag className='w-6 h-6' />
 						</Link>
 						{user ? (
-							<Link
-								href='/dashboard'
-								className='flex items-center mr-4 py-2 px-4 rounded-lg bg-zinc-100 transition-all hover:bg-zinc-200'>
-								<i className='block w-6 h-6 mr-2 bg-emerald-500 rounded-full'></i>
-								<p>Hey {user.first_name}</p>
-							</Link>
+							<AccountDropdown name={user.first_name} />
 						) : (
 							<>
 								<Button onClick={open} icon={BiLogInCircle}>
