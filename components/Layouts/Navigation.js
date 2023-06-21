@@ -8,7 +8,7 @@ import { useDisclosure } from "@mantine/hooks";
 import ApplicationLogo from "@/components/ApplicationLogo";
 import Button from "@/components/common/button";
 import AuthModal from "@/components/auth/auth-modal";
-import AccountDropdown from "./AccountDropdown";
+import AccountDropdown from "@/components/Layouts/AccountDropdown";
 
 const Navigation = ({ user }) => {
 	const [opened, { open, close }] = useDisclosure(false);

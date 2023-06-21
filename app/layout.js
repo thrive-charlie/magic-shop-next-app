@@ -1,5 +1,5 @@
 import Provider from "@/components/Provider";
-import "./globals.css";
+import "@/app/globals.css";
 import { Inter } from "next/font/google";
 import AppLayout from "@/components/Layouts/AppLayout";
 

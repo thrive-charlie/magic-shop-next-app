@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Elements } from "@stripe/react-stripe-js";
-import CheckoutForm from "./checkout-form";
+import CheckoutForm from "@/components/cart/checkout-form";
 import { useSession } from "next-auth/react";
 
 export default function CheckoutBtn({ stripePromise }) {

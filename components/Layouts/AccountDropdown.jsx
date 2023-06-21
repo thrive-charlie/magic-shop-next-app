@@ -3,7 +3,7 @@ import React from 'react'
 import { Menu } from '@mantine/core'
 import { BiLogOutCircle, BiPackage, BiUserCircle } from 'react-icons/bi'
 import Link from 'next/link'
-import { signIn, signOut } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 
 export default function AccountDropdown({ name }) {
 

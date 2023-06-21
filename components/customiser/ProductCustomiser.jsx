@@ -3,8 +3,8 @@
 import React, { useRef, useState } from "react";
 import { Flex } from "@mantine/core";
 import { Stage, Layer, Rect } from "react-konva";
-import Element from "./Element";
-import CustomiserSidebar from "./CustomiserSidebar";
+import Element from "@/components/customiser/Element";
+import CustomiserSidebar from "@/components/customiser/CustomiserSidebar";
 
 export const dynamic = 'force-dynamic';
 

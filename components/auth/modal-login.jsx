@@ -32,9 +32,6 @@ export default function ModalLogin({ close, setView, completed }) {
             setError(true);
             console.error(res);
         } else {
-            if (completed !== null) {
-                await completed();
-            }
             close();
             window.location.reload();
         }

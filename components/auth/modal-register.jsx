@@ -31,7 +31,7 @@ export default function ModalRegister({ close, setView }) {
     );
 
     if (data.message) {
-
+      setLoading(false);
     }
 
   };
