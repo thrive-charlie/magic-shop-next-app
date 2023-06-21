@@ -4,10 +4,7 @@ import AddonSelector from '@/components/products/AddonSelector';
 // Get product from API
 async function getProduct(slug) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/${slug}`, { next: { revalidate: 100 } });
-  console.log(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products/${slug}`)
   if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    console.log(res);
     throw new Error('Failed to fetch data');
   }
   return await res.json();
@@ -62,7 +59,6 @@ export async function generateMetadata({ params }) {
  */
 export async function generateStaticParams() {
   const products = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`, { next: { revalidate: 100 } }).then((res) => res.json());
-  console.log(products);
   return products.map((products) => ({
     slug: products.slug,
   }));

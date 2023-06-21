@@ -28,8 +28,6 @@ export default function ModalLogin({ close, setView, completed }) {
 
         setLoading(false);
 
-        console.log(res);
-
         if (res?.error) {
             setError(true);
             console.error(res);

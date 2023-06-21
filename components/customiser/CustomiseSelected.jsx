@@ -82,15 +82,6 @@ export default function CustomiseSelected({ element, deleteElement, colourPalett
         >
           Delete
         </Button>
-        <Button
-          variant="outline"
-          color="indigo"
-          onClick={() => {
-            console.log(element.zIndex(2));
-          }}
-        >
-          See Data
-        </Button>
       </Flex>
 
       {element?.attrs?.component === "Text" && (

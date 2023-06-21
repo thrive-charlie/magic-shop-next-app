@@ -82,7 +82,6 @@ export default function ProductCustomiser() {
             height={canvasSize.height}
             backgroundColor="#A00"
             ref={stageRef}
-            onContextMenu={(e) => console.log("opened menu of ", e.target)}
             onMouseDown={checkDeselect}
             onTouchStart={checkDeselect}
           >

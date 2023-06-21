@@ -13,23 +13,22 @@ export default function CheckoutBtn({ stripePromise }) {
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
     if (session && clientSecret === "") {
-        console.log(session, 'http://127.0.0.1:8000/api/checkout')
-        fetch("http://127.0.0.1:8000/api/checkout", {
+      fetch("http://127.0.0.1:8000/api/checkout", {
         method: "POST",
-        headers: { 
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${session.user.access_token}`,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${session.user.access_token}`,
         },
-        })
+      })
         .then((res) => res.json())
         .then((data) => setClientSecret(data.client_secret));
     }
-}, [session, clientSecret]);
+  }, [session, clientSecret]);
 
   const options = {
     clientSecret,
     appearance: {
-        theme: 'stripe',
+      theme: 'stripe',
     },
   };
 

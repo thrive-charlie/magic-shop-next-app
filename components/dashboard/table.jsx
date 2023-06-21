@@ -39,26 +39,26 @@ export default function Table({ orders }) {
                 <Button
                     icon={HiArrowUpRight}
                     onClick={() => setActive(row.id)}
-                >View Order</Button>
+                >View</Button>
             )
         }
     ];
 
-  return (
-    <div>
-        <ReactDataTable columns={columns} data={orders} />
-        <Modal 
-            opened={active}
-            onClose={() => setActive(null)} 
-            size="xl" 
-            title="View Order" 
-            centered>
-            {active && (
-                <section>
-                    <p>Extra order details ID: {active}</p>
-                </section>
-            )}
-      </Modal>
-    </div>
-  )
+    return (
+        <div>
+            <ReactDataTable columns={columns} data={orders} />
+            <Modal
+                opened={active}
+                onClose={() => setActive(null)}
+                size="xl"
+                title="View Order"
+                centered>
+                {active && (
+                    <section>
+                        <p>Extra order details ID: {active}</p>
+                    </section>
+                )}
+            </Modal>
+        </div>
+    )
 }
