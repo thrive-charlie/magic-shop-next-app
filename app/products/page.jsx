@@ -5,7 +5,7 @@ import React from "react";
 
 // Get product from API
 async function getProducts() {
-  const res = await fetch(`http://127.0.0.1:8000/api/products`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`);
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error('Failed to fetch data');

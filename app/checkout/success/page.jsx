@@ -1,12 +1,20 @@
 import Button from "@/components/common/button";
-import { useApi } from "@/utils/useApi";
+import getApi from "@/utils/getApi";
 import Link from "next/link";
 
-export default async function Page({ searchParams }) {
-
-  const { data } = await useApi('/checkout/complete', 'POST', { 
-    session_id: searchParams.session_id 
+async function getData() {
+  const data = getApi('/checkout/complete', { 
+    requestType: 'POST',
+    authRequired: true,
+    cache: 'no-cache',
+    data: { session_id: searchParams.session_id } 
   });
+  return data;
+}
+
+export default async function Page() {
+
+  const data = await getData();
 
   return (
     <main className='my-8 mx-auto max-w-7xl'>
