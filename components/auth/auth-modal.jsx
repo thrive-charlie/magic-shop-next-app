@@ -7,8 +7,9 @@ import ModalForgotPassword from './modal-forgot-password';
 
 export default function AuthModal({ open, close, completed }) {
 
-    // Convert to reducer
+    // TODO: Convert to reducer
     const [view, setView] = useState('login');
+    const [message, setMessage] = useState('');
 
     let Component = 'login';
     switch (view) {
@@ -31,7 +32,7 @@ export default function AuthModal({ open, close, completed }) {
                 blur: 5,
             }}
             onClose={close}>
-            <Component close={close} setView={setView} completed={completed} />
+            <Component close={close} setView={setView} completed={completed} message={message} setMessage={setMessage} />
         </Modal>
     )
 }

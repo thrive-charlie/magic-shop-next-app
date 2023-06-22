@@ -5,9 +5,9 @@ import { TextInput, Alert, PasswordInput } from '@mantine/core'
 
 import Button from '@/components/common/button'
 import { BiLogInCircle } from 'react-icons/bi'
-import { BsExclamationTriangle } from 'react-icons/bs'
+import { BsExclamationTriangle, BsPersonCheck } from 'react-icons/bs'
 
-export default function ModalLogin({ close, setView, completed }) {
+export default function ModalLogin({ close, setView, completed, message, setMessage }) {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
@@ -18,6 +18,7 @@ export default function ModalLogin({ close, setView, completed }) {
         e.preventDefault();
 
         setLoading(true);
+        setMessage('');
 
         const res = await signIn('credentials', {
             redirect: false,
@@ -45,6 +46,13 @@ export default function ModalLogin({ close, setView, completed }) {
             </header>
             <div className='mb-12 max-w-md mx-auto'>
                 <form onSubmit={loginHandle}>
+                    {message && (
+                        <Alert
+                            icon={<BsPersonCheck className="w-12 h-12 text-black" />} 
+                            color="green" variant="outline" className='mb-4'>
+                            {message}
+                        </Alert>
+                    )}
                     {error && (
                         <Alert icon={<BsExclamationTriangle className="w-6 h-6" />}
                             color="red"

@@ -3,12 +3,11 @@
 import React, { useState } from "react";
 import { TextInput, Alert, PasswordInput } from '@mantine/core';
 import axios from 'axios';
-import { useSession } from 'next-auth/react';
 import { BsExclamationTriangle } from "react-icons/bs";
 import { BiLogInCircle } from 'react-icons/bi';
 import Button from "@/components/common/button";
 
-export default function ModalRegister({ close, setView }) {
+export default function ModalRegister({ close, setView, setMessage }) {
 
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -20,7 +19,7 @@ export default function ModalRegister({ close, setView }) {
     // Get form data and submit as json in axios post request to api
     const formData = new FormData(e.target);
 
-    const { data } = await axios.post(
+    /*const { data } = await axios.post(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register`,
       { ...Object.fromEntries(formData) },
       {
@@ -28,11 +27,13 @@ export default function ModalRegister({ close, setView }) {
           "Content-Type": "application/json",
         }
       }
-    );
+    );*/
 
-    if (data.message) {
+    // if (data.message) {
       setLoading(false);
-    }
+      setMessage('Your account has been created, you can now login.')
+      setView('login');
+    // }
 
   };
 
