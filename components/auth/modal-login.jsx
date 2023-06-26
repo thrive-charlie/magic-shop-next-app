@@ -1,11 +1,13 @@
+"use client";
+
 import React, { useState } from 'react'
-import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { TextInput, Alert, PasswordInput } from '@mantine/core'
 
 import Button from '@/components/common/button'
 import { BiLogInCircle } from 'react-icons/bi'
 import { BsExclamationTriangle, BsPersonCheck } from 'react-icons/bs'
+import Link from 'next/link';
 
 export default function ModalLogin({ close, setView, completed, message, setMessage }) {
 
@@ -18,7 +20,7 @@ export default function ModalLogin({ close, setView, completed, message, setMess
         e.preventDefault();
 
         setLoading(true);
-        setMessage('');
+        // setMessage('');
 
         const res = await signIn('credentials', {
             redirect: false,
@@ -45,14 +47,14 @@ export default function ModalLogin({ close, setView, completed, message, setMess
                 <p>Sign in to your account</p>
             </header>
             <div className='mb-12 max-w-md mx-auto'>
+                {message && (
+                    <Alert
+                        icon={<BsPersonCheck className="w-12 h-12 text-black" />}
+                        color="green" variant="outline" className='mb-4'>
+                        {message}
+                    </Alert>
+                )}
                 <form onSubmit={loginHandle}>
-                    {message && (
-                        <Alert
-                            icon={<BsPersonCheck className="w-12 h-12 text-black" />} 
-                            color="green" variant="outline" className='mb-4'>
-                            {message}
-                        </Alert>
-                    )}
                     {error && (
                         <Alert icon={<BsExclamationTriangle className="w-6 h-6" />}
                             color="red"
@@ -84,13 +86,19 @@ export default function ModalLogin({ close, setView, completed, message, setMess
                         <Button type='submit' loading={loading} icon={BiLogInCircle}>Login</Button>
                         <p className='mt-4'>
                             Don&apos;t have an account?
-                            <button
-                                onClick={() => setView('register')}
-                                type="button"
-                                className='ml-1 bg-transparent text-blue-500 underline transition-all hover:opacity-75'>
-                                Register now
-                            </button>
-                            .
+                            {setView ? (
+                                <button
+                                    onClick={() => setView('register')}
+                                    type="button"
+                                    className='ml-1 bg-transparent text-blue-500 underline transition-all hover:opacity-75'>
+                                    Register now
+                                </button>
+                            ) : (
+                                <Link href="/auth/register"
+                                    className='ml-1 bg-transparent text-blue-500 underline transition-all hover:opacity-75'>
+                                    Register Now
+                                </Link>
+                            )}
                         </p>
                     </div>
                 </form>

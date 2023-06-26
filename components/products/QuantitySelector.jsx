@@ -1,13 +1,17 @@
 import React from 'react'
-import Button from '@/components/common/button'
+import { ActionIcon } from '@mantine/core'
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai'
 
 export default function QuantitySelector({ quantity, decrease, increase }) {
     return (
         <div className='flex items-center'>
-            <Button onClick={decrease} icon={AiOutlineMinus} />
+            <ActionIcon color="violet" variant="filled" onClick={decrease}>
+                <AiOutlineMinus className='w-4 h-4' />
+            </ActionIcon>
             <p className='mx-4'>{quantity}</p>
-            <Button onClick={increase} icon={AiOutlinePlus} />
+            <ActionIcon color="violet" variant="filled" onClick={increase}>
+                <AiOutlinePlus className='w-4 h-4' />
+            </ActionIcon>
         </div>
     )
 }

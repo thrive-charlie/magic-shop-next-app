@@ -1,5 +1,8 @@
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import ProductGallery from '@/components/products/product-gallery';
 import AddonSelector from '@/components/products/AddonSelector';
+import TradePricingTable from "@/components/products/TradePricingTable";
 
 // Get product from API
 async function getProduct(slug) {
@@ -11,6 +14,8 @@ async function getProduct(slug) {
 }
 
 export default async function ProductSinglePage({ params }) {
+
+  const { user } = await getServerSession(authOptions);
 
   // Pull in this product page data and build up page
   const { id, name, description, price, addon_groups: groups } = await getProduct(params.slug);
@@ -28,8 +33,8 @@ export default async function ProductSinglePage({ params }) {
           <p>{description}</p>
           <p>From £{price}</p>
         </header>
-        {id === 10 && (
-          <p>Show trade pricing table</p>
+        {user.type === 'trade' && (
+          <TradePricingTable />
         )}
 
         <AddonSelector id={id} groups={groups} />

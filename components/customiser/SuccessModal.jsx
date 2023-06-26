@@ -13,6 +13,7 @@ export default function SuccessModal({ open }) {
             closeButtonProps={{ style: { display: 'none' } }}
             closeOnClickOutside={false}
             closeOnEscape={false}
+            centered
             overlayProps={{
                 opacity: 0.55,
                 blur: 6,

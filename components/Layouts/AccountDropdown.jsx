@@ -3,16 +3,18 @@ import React from 'react'
 import { Menu } from '@mantine/core'
 import { BiLogOutCircle, BiPackage, BiUserCircle } from 'react-icons/bi'
 import Link from 'next/link'
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 
 export default function AccountDropdown({ name }) {
+
+    const { data } = useSession();
 
     return (
         <Menu shadow="md" width={200}>
             <Menu.Target>
                 <div
                     className='flex items-center mr-4 py-2 px-4 rounded-lg bg-zinc-100 cursor-pointer transition-all hover:bg-zinc-200'>
-                    <i className='block w-6 h-6 mr-2 bg-emerald-500 rounded-full'></i>
+                    <i className={`block w-6 h-6 mr-2 rounded-full ${data?.user.type === 'trade' ? 'bg-orange-500' : 'bg-emerald-500'}`}></i>
                     <p>Hey {name}</p>
                 </div>
             </Menu.Target>
