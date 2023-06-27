@@ -15,29 +15,34 @@ async function getProduct(slug) {
 
 export default async function ProductSinglePage({ params }) {
 
-  const { user } = await getServerSession(authOptions);
+  const data = await getServerSession(authOptions);
 
   // Pull in this product page data and build up page
-  const { id, name, description, price, addon_groups: groups } = await getProduct(params.slug);
+  const { id, name, description, price, addon_groups: groups, images } = await getProduct(params.slug);
 
-  const products = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`).then((res) => res.json());
+  // const products = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`).then((res) => res.json());
 
   return (
     <main className='max-w-7xl mx-auto grid grid-cols-2 gap-12 px-8'>
       <aside>
-        <ProductGallery />
+        <ProductGallery images={images} />
       </aside>
-      <section className='bg-white shadow py-20 px-8'>
-        <header className='mb-4'>
-          <h1 className='text-4xl font-bold tracking-tighter mb-2'>{name}</h1>
-          <p>{description}</p>
-          <p>From £{price}</p>
-        </header>
-        {user.type === 'trade' && (
-          <TradePricingTable />
-        )}
+      <section className='bg-white shadow py-20 px-8 relative'>
 
-        <AddonSelector id={id} groups={groups} />
+        <div className="sticky top-12">
+
+          <header className='mb-4'>
+            <h1 className='text-4xl font-bold tracking-tighter mb-2'>{name}</h1>
+            <p>{description}</p>
+            <p>From £{price}</p>
+          </header>
+
+          {data?.user?.type === 'trade' && (
+            <TradePricingTable />
+          )}
+
+          <AddonSelector id={id} groups={groups} />
+        </div>
 
       </section>
     </main>
