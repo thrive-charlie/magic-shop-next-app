@@ -1,6 +1,7 @@
 import Provider from "@/components/Provider";
 import "@/app/globals.css";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import AppLayout from "@/components/Layouts/AppLayout";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,6 +21,15 @@ export default function RootLayout({ children }) {
 				<Provider>
 					<AppLayout>{children}</AppLayout>
 				</Provider>
+				<Script src="https://www.googletagmanager.com/gtag/js?id=G-VSFXEQ2GPW" />
+				<Script id="show-banner">
+					{`
+					window.dataLayer = window.dataLayer || [];
+					function gtag(){dataLayer.push(arguments);}
+					gtag('js', new Date());
+					gtag('config', 'G-VSFXEQ2GPW');
+					`}
+				</Script>
 			</body>
 		</html>
 	);
