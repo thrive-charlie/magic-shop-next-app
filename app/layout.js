@@ -21,13 +21,14 @@ export default function RootLayout({ children }) {
 				<Provider>
 					<AppLayout>{children}</AppLayout>
 				</Provider>
-				<Script src="https://www.googletagmanager.com/gtag/js?id=G-VSFXEQ2GPW" />
+				<Script src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GTAG_ID}`} />
 				<Script id="show-banner">
 					{`
 					window.dataLayer = window.dataLayer || [];
 					function gtag(){dataLayer.push(arguments);}
 					gtag('js', new Date());
-					gtag('config', 'G-VSFXEQ2GPW');
+					gtag('config', '${process.env.GTAG_ID}');
+					console.log('${process.env.GTAG_ID}');
 					`}
 				</Script>
 			</body>

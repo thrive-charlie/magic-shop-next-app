@@ -20,8 +20,6 @@ export default async function ProductSinglePage({ params }) {
   // Pull in this product page data and build up page
   const { id, name, description, price, addon_groups: groups, images } = await getProduct(params.slug);
 
-  // const products = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`).then((res) => res.json());
-
   return (
     <main className='max-w-7xl mx-auto grid grid-cols-2 gap-12 px-8'>
       <aside>
