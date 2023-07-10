@@ -6,13 +6,17 @@ export default function useApi() {
 	return { apiRequest, serverApiRequest, wpRequest, serverWpRequest };
 }
 
-async function apiRequest({ url, method = 'GET', body = {}, token = false, next = {} }) {
-
+async function apiRequest({
+	url,
+	method = "GET",
+	body = {},
+	token = false,
+	next = {},
+}) {
 	let data = null;
 	let error = null;
 
 	try {
-
 		// Remove the first slash from the url
 		url = url.replace(/^\/|\/$/g, "");
 
@@ -28,7 +32,7 @@ async function apiRequest({ url, method = 'GET', body = {}, token = false, next 
 			options.headers.Authorization = `Bearer ${token}`;
 		}
 
-		if (body) {
+		if (body.length > 0) {
 			options.body = JSON.stringify(body);
 		}
 
@@ -40,26 +44,27 @@ async function apiRequest({ url, method = 'GET', body = {}, token = false, next 
 
 		// Get the data
 		data = await res.json();
-
-	} catch (error) { 
+	} catch (error) {
 		console.log(error);
 		return { data, error };
 	}
 
 	return { data, error };
-
 }
 
-async function serverApiRequest({ url, method = 'GET', body = {}, auth = false, next = {} }) {
-
+async function serverApiRequest({
+	url,
+	method = "GET",
+	body = {},
+	auth = false,
+	next = {},
+}) {
 	const session = await getServerSession(authOptions);
-	console.log(session);
 
 	let data = null;
 	let error = null;
 
 	try {
-
 		// Remove the first slash from the url
 		url = url.replace(/^\/|\/$/g, "");
 
@@ -72,14 +77,14 @@ async function serverApiRequest({ url, method = 'GET', body = {}, auth = false, 
 		};
 
 		if (auth) {
-			console.log(session);
+			console.log(session.user.access_token);
 			if (!session?.user?.access_token) {
 				throw new Error("No access token found - Is user logged in?");
 			}
 			options.headers.Authorization = `Bearer ${session.user.access_token}`;
 		}
 
-		if (body) {
+		if (body.length > 0) {
 			options.body = JSON.stringify(body);
 		}
 
@@ -91,28 +96,26 @@ async function serverApiRequest({ url, method = 'GET', body = {}, auth = false, 
 
 		// Get the data
 		data = await res.json();
-
-	} catch (error) { 
+	} catch (error) {
 		console.log(error);
 		return { data, error };
 	}
 
 	return { data, error };
-
 }
 
 async function wpRequest() {}
 
 async function serverWpRequest({ url, ...args }) {
-
 	// Replace first slash
 	url = url.replace(/^\/|\/$/g, "");
 
 	console.log(`${process.env.WORDPRESS_API_URL}/${url}`);
-	const res = await fetch(`${process.env.WORDPRESS_API_URL}/${url}`, { ...args });
+	const res = await fetch(`${process.env.WORDPRESS_API_URL}/${url}`, {
+		...args,
+	});
 	const data = await res.json();
 	return { data, error: null };
-
 }
 
 async function request() {}
