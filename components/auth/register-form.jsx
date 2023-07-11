@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 
-import Button from "@/components/Button";
+import Button from "@/components/common/button";
 import Input from "@/components/Input";
 import InputError from "@/components/InputError";
 import Label from "@/components/Label";
@@ -11,28 +11,28 @@ import { useAuth } from "@/hooks/useAuth";
 
 export default function RegisterForm() {
 
-    const { register } = useAuth({
-        middleware: 'guest',
-        redirectIfAuthenticated: '/',
+  const { register } = useAuth({
+    middleware: 'guest',
+    redirectIfAuthenticated: '/',
+  })
+
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [passwordConfirmation, setPasswordConfirmation] = useState('')
+  const [errors, setErrors] = useState([])
+
+  const submitForm = event => {
+    event.preventDefault()
+
+    register({
+      name,
+      email,
+      password,
+      password_confirmation: passwordConfirmation,
+      setErrors,
     })
-
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [passwordConfirmation, setPasswordConfirmation] = useState('')
-    const [errors, setErrors] = useState([])
-
-    const submitForm = event => {
-        event.preventDefault()
-
-        register({
-            name,
-            email,
-            password,
-            password_confirmation: passwordConfirmation,
-            setErrors,
-        })
-    }
+  }
 
 
   return (

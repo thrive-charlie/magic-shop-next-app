@@ -66,7 +66,6 @@ export async function generateMetadata({ params }) {
  * @returns array
  */
 export async function generateStaticParams() {
-  console.log(`Loading from ${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`)
   const products = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/products`, { next: { revalidate: 100 } }).then((res) => res.json());
   return products.map((products) => ({
     slug: products.slug,

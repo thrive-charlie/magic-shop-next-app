@@ -1,24 +1,19 @@
-import useApi from "@/utils/useApi";
-import Button from "../common/button";
+"use client"
+import React, { useContext } from 'react'
+import { CheckoutContext } from "@/components/providers/CheckoutProvider";
+import CheckoutButton from "./CheckoutButton";
+import PaymentOptions from "./PaymentOptions";
+import ShippingOptions from "./ShippingOptions";
+import InvoiceInfo from "./InvoiceInfo";
 
-async function getCheckoutSummary() {
-    const { serverApiRequest } = useApi();
-    return await serverApiRequest({
-        url: '/checkout/summary',
-        method: 'GET',
-        auth: true,
-    });
-}
+export default function CheckoutOptions({ checkout }) {
 
-export default async function CheckoutOptions() {
-
-    const { data, error } = await getCheckoutSummary();
-    console.log(data);
+    const { paymentOption } = useContext(CheckoutContext);
 
     return (
-        <>
+        <div className="bg-white p-8 shadow-sky-500/20 shadow-xl">
             <ul className="mb-4 bg-gray-100 p-4 rounded">
-                {data?.cart?.map((item) => (
+                {checkout?.cart?.map((item) => (
                     <li key={item.id} className="flex items-center justify-between">
                         <p>{item.quantity} x {item.product_name}</p>
                         <p>£{item.product_price}</p>
@@ -26,19 +21,10 @@ export default async function CheckoutOptions() {
                 ))}
             </ul>
 
-            <div>
-                {data.shipping_options.map((option) => (
-                    <div key={option.id} className="my-4 p-4 rounded bg-gray-100 flex justify-between">
-                        <p>{option.label}</p>
-                        <p>+ £{option.price}</p>
-                    </div>
-                ))}
-            </div>
-
             <ul className="my-4 p-4 bg-gray-100 rounded">
                 <li className="flex justify-between items-center">
                     <p>Subtotal</p>
-                    <p>£{data?.totals.subtotal}</p>
+                    <p>£{checkout?.totals.subtotal}</p>
                 </li>
                 <li className="flex justify-between items-center">
                     <p>Shipping</p>
@@ -46,24 +32,21 @@ export default async function CheckoutOptions() {
                 </li>
                 <li className="flex justify-between items-center">
                     <p>VAT</p>
-                    <p>£{data?.totals.vat}</p>
+                    <p>£{checkout?.totals.vat}</p>
                 </li>
                 <li className="flex justify-between items-center">
                     <p>Grand Total</p>
-                    <p>£{data?.totals.total}</p>
+                    <p>£{checkout?.totals.total}</p>
                 </li>
             </ul>
 
-            <div className="my-4 p-4 rounded bg-gray-100 flex flex-col gap-y-4">
-                <p>Payment Options</p>
-                <button className="p-2 bg-emerald-300 rounded block text-center transition-all hover:bg-opacity-50">Pay Upfront</button>
-                <button className="p-2 bg-emerald-300 rounded block text-center transition-all hover:bg-opacity-50">50% Upfront, 50% Invoiced</button>
-            </div>
+            <ShippingOptions options={checkout.shipping_options} />
+            <PaymentOptions options={checkout.payment_methods} />
 
-            <div className="flex justify-center">
-                <Button>Checkout</Button>
-            </div>
+            {paymentOption === 2 && <InvoiceInfo />}
 
-        </>
+            <CheckoutButton />
+
+        </div>
     )
 }

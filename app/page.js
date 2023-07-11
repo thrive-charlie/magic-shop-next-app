@@ -2,12 +2,12 @@ import BlockBuilder from "@/components/blocks/BlockBuilder";
 import useApi from "@/utils/useApi";
 
 async function getHomepage() {
+	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const { serverWpRequest } = useApi();
 	return await serverWpRequest({ url: "/wp/v2/pages/6" });
 }
 
 export default async function Home() {
-
 	const { data, error } = await getHomepage();
 
 	return (
@@ -16,9 +16,11 @@ export default async function Home() {
 				<h1 className='text-4xl font-bold tracking-tighter mb-2'>
 					Magic Shop
 				</h1>
-				<p className="text-md">Proof of concept for NextJS/Laravel setup</p>
+				<p className='text-md'>
+					Proof of concept for NextJS/Laravel setup
+				</p>
 
-				<div className="p-4 mt-4 border-2 border-dashed border-slate-500">
+				<div className='p-4 mt-4 border-2 border-dashed border-slate-500'>
 					<em>Content from WordPress</em>
 					<BlockBuilder blocks={data.acf.page_content} />
 				</div>

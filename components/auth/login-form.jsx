@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from 'next/link';
 import { getProviders, signIn, useSession } from 'next-auth/react';
-import Button from "@/components/Button";
+import Button from "@/components/common/button";
 import Input from "@/components/Input";
 import InputError from "@/components/InputError";
 import Label from "@/components/Label";
@@ -13,37 +13,36 @@ import { useRouter } from "next/navigation";
 export default function LoginForm() {
 
   const router = useRouter();
-    const [providers, setProviders] = useState(null);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [shouldRemember, setShouldRemember] = useState(false);
-    const [errors, setErrors] = useState([]);
-    const [status, setStatus] = useState(null);
+  const [providers, setProviders] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [shouldRemember, setShouldRemember] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const [status, setStatus] = useState(null);
 
-    const submitForm = async e => {
-        e.preventDefault();
+  const submitForm = async e => {
+    e.preventDefault();
 
-        const res = await signIn('credentials', {
-            redirect: false,
-            email,
-            password,
-            callbackUrl: `${window.location.origin}/dashboard`
-        });
-    
-        if (res.ok) {
-          setErrors(false);
-          close();
-          router.push('/dashboard');
-        }
+    const res = await signIn('credentials', {
+      redirect: false,
+      email,
+      password,
+      callbackUrl: `${window.location.origin}/dashboard`
+    });
 
-    };
-  
-    useEffect(() => {
-      (async () => {
-        const res = await getProviders();
-        setProviders(res);
-      })();
-    }, []);
+    if (res.ok) {
+      setErrors(false);
+      router.push('/dashboard');
+    }
+
+  };
+
+  useEffect(() => {
+    (async () => {
+      const res = await getProviders();
+      setProviders(res);
+    })();
+  }, []);
 
   return (
     <form onSubmit={submitForm}>

@@ -77,7 +77,6 @@ async function serverApiRequest({
 		};
 
 		if (auth) {
-			console.log(session.user.access_token);
 			if (!session?.user?.access_token) {
 				throw new Error("No access token found - Is user logged in?");
 			}
@@ -110,7 +109,6 @@ async function serverWpRequest({ url, ...args }) {
 	// Replace first slash
 	url = url.replace(/^\/|\/$/g, "");
 
-	console.log(`${process.env.WORDPRESS_API_URL}/${url}`);
 	const res = await fetch(`${process.env.WORDPRESS_API_URL}/${url}`, {
 		...args,
 	});

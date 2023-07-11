@@ -35,7 +35,7 @@ export default function ModalLogin({ close, setView, completed, message, setMess
             setError(true);
             console.error(res);
         } else {
-            close();
+            // close();
             window.location.reload();
         }
     };
