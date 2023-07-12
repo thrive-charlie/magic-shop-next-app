@@ -18,7 +18,7 @@ export default async function Page() {
   const { data, error } = await getCheckoutSummary();
 
   return (
-    <div className="mt-12 max-w-7xl mx-auto w-full">
+    <div className="mt-12 max-w-7xl mx-auto w-full px-8">
       <h1 className='text-2xl font-bold mb-4'>Checkout</h1>
       <CheckoutWrapper checkout={data} />
     </div>

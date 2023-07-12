@@ -73,7 +73,7 @@ export default function CheckoutForm() {
                     control={control}
                     rules={{ required: true }}
                     render={({ field }) => (
-                        <TextInput placeholder="Postcode" label="Postcode" withAsterisk error={errors?.shipping?.postcode && 'Please provide your postcode'} {...field} />
+                        <TextInput placeholder="Postcode" label="Postcode" withAsterisk error={errors?.shipping?.postcode && 'Please provide your postcode'} onKeyUp={e => console.log(e.target.value)} {...field} />
                     )}
                 />
                 <Controller

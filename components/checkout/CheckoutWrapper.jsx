@@ -14,7 +14,6 @@ export default function CheckoutWrapper({ checkout }) {
             <aside className="w-1/3">
                 <CheckoutOptions checkout={checkout} />
             </aside>
-            {/* </form> */}
         </CheckoutProvider>
     )
 }

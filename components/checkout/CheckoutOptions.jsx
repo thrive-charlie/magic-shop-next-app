@@ -26,10 +26,12 @@ export default function CheckoutOptions({ checkout }) {
                     <p>Subtotal</p>
                     <p>£{checkout?.totals.subtotal}</p>
                 </li>
-                <li className="flex justify-between items-center">
-                    <p>Shipping</p>
-                    <p>£0.00</p>
-                </li>
+                {checkout?.totals.shipping && (
+                    <li className="flex justify-between items-center">
+                        <p>Shipping</p>
+                        <p>£0.00</p>
+                    </li>
+                )}
                 <li className="flex justify-between items-center">
                     <p>VAT</p>
                     <p>£{checkout?.totals.vat}</p>
@@ -40,10 +42,10 @@ export default function CheckoutOptions({ checkout }) {
                 </li>
             </ul>
 
-            <ShippingOptions options={checkout.shipping_options} />
+            {checkout.shipping_options && <ShippingOptions options={checkout.shipping_options} />}
             <PaymentOptions options={checkout.payment_methods} />
 
-            {paymentOption === 2 && <InvoiceInfo />}
+            {paymentOption === 2 && <InvoiceInfo payment={checkout.invoice_initial_payment} />}
 
             <CheckoutButton />
 
