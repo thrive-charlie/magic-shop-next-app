@@ -7,7 +7,7 @@ import CheckoutOptions from '@/components/checkout/CheckoutOptions'
 
 export default function CheckoutWrapper({ checkout }) {
     return (
-        <CheckoutProvider>
+        <CheckoutProvider data={checkout}>
             <section className="w-2/3 pr-12">
                 <CheckoutForm />
             </section>

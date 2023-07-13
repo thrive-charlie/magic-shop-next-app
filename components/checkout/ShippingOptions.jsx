@@ -1,6 +1,7 @@
 "use client"
 import React, { useContext } from 'react'
 import { CheckoutContext } from '@/components/providers/CheckoutProvider'
+import { BsCheck } from 'react-icons/bs'
 
 export default function ShippingOptions({ options }) {
 
@@ -15,8 +16,9 @@ export default function ShippingOptions({ options }) {
                         <button
                             type='button'
                             onClick={() => setShippingOption(id)} key={id}
-                            className={`p-2 bg-slate-700 text-white border-2 rounded block transition-all hover:bg-opacity-80 ${shippingOption === id ? 'border-black shadow' : 'border-transparent'}`}>
+                            className={`p-2 bg-slate-700 text-white border-2 rounded flex items-center justify-center transition-all hover:bg-opacity-80 ${shippingOption === id ? 'shadow-xl' : ''}`}>
                             {label} +£{price}.00
+                            {shippingOption === id && <BsCheck className='w-6 h-6' />}
                         </button>
                     ))}
                 </div>

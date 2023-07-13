@@ -1,5 +1,7 @@
 "use client"
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
+import { Alert } from '@mantine/core';
+import { GoAlert } from 'react-icons/go';
 import { CheckoutContext } from "@/components/providers/CheckoutProvider";
 import CheckoutButton from "./CheckoutButton";
 import PaymentOptions from "./PaymentOptions";
@@ -8,7 +10,10 @@ import InvoiceInfo from "./InvoiceInfo";
 
 export default function CheckoutOptions({ checkout }) {
 
-    const { paymentOption } = useContext(CheckoutContext);
+    const { paymentOption, shippingOptions, errorMessage } = useContext(CheckoutContext);
+
+    // When the postcode updates, new shipping options are fetched. 
+    // We need to find a way to access those shipping options. 
 
     return (
         <div className="bg-white p-8 shadow-sky-500/20 shadow-xl">
@@ -42,10 +47,16 @@ export default function CheckoutOptions({ checkout }) {
                 </li>
             </ul>
 
-            {checkout.shipping_options && <ShippingOptions options={checkout.shipping_options} />}
-            <PaymentOptions options={checkout.payment_methods} />
+            {shippingOptions && <ShippingOptions options={shippingOptions} />}
+            <PaymentOptions options={checkout.payment_options} />
 
             {paymentOption === 2 && <InvoiceInfo payment={checkout.invoice_initial_payment} />}
+
+            {errorMessage && (
+                <Alert my={20} icon={<GoAlert className="w-6 h-6" />} title="There was an issue checking out!" color="red">
+                    {errorMessage}
+                </Alert>
+            )}
 
             <CheckoutButton />
 

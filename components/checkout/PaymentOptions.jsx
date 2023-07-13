@@ -1,7 +1,7 @@
 "use client"
 import React, { useContext } from 'react'
 import { CheckoutContext } from '@/components/providers/CheckoutProvider'
-import { BsCreditCard2Back } from 'react-icons/bs'
+import { BsCreditCard2Back, BsCheck } from 'react-icons/bs'
 import { useDisclosure } from '@mantine/hooks';
 import { Tooltip } from '@mantine/core';
 
@@ -21,9 +21,10 @@ export default function PaymentOptions({ options }) {
                                 <button
                                     type='button'
                                     onClick={() => setPaymentOption(id)}
-                                    className={`p-2 bg-slate-700 text-white border-2 rounded flex items-center transition-all hover:bg-opacity-80 ${paymentOption === id ? 'border-black shadow' : 'border-transparent'}`}>
+                                    className={`p-2 bg-slate-700 text-white border-4 rounded flex justify-start items-center transition-all hover:bg-opacity-80 ${paymentOption === id ? 'shadow-xl' : ''}`}>
                                     <BsCreditCard2Back className='w-6 h-6 mr-4' />
-                                    {label}
+                                    <span className='flex-1'>{label}</span>
+                                    {paymentOption === id && <BsCheck className='w-6 h-6' />}
                                 </button>
                             </Tooltip>
                         )

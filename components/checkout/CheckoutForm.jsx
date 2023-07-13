@@ -1,15 +1,24 @@
 "use client"
 
-import React, { useState, useContext } from 'react';
-import { useForm, Controller } from "react-hook-form";
-import { Button, TextInput, Checkbox } from '@mantine/core';
-
+import React, { useState, useContext, useEffect } from 'react';
+import { Controller } from "react-hook-form";
+import { TextInput, Checkbox } from '@mantine/core';
+import useDebounce from '@/hooks/useDebounce';
 import { CheckoutContext } from '@/components/providers/CheckoutProvider';
 
 export default function CheckoutForm() {
 
     const [differentBilling, setDifferentBilling] = useState(true);
-    const { control, errors } = useContext(CheckoutContext);
+    const [postcode, setPostcode] = useState('');
+    const { control, errors, updatePostcode } = useContext(CheckoutContext);
+
+    const debouncedPostcode = useDebounce(postcode, 2000);
+
+    useEffect(() => {
+        if (debouncedPostcode) {
+            updatePostcode(debouncedPostcode);
+        }
+    }, [debouncedPostcode, updatePostcode]);
 
     return (
         <div>
@@ -73,7 +82,7 @@ export default function CheckoutForm() {
                     control={control}
                     rules={{ required: true }}
                     render={({ field }) => (
-                        <TextInput placeholder="Postcode" label="Postcode" withAsterisk error={errors?.shipping?.postcode && 'Please provide your postcode'} onKeyUp={e => console.log(e.target.value)} {...field} />
+                        <TextInput placeholder="Postcode" label="Postcode" withAsterisk error={errors?.shipping?.postcode && 'Please provide your postcode'} onKeyUp={e => setPostcode(e.target.value)} {...field} />
                     )}
                 />
                 <Controller

@@ -32,7 +32,7 @@ async function apiRequest({
 			options.headers.Authorization = `Bearer ${token}`;
 		}
 
-		if (body.length > 0) {
+		if (Object.keys(body).length > 0) {
 			options.body = JSON.stringify(body);
 		}
 
